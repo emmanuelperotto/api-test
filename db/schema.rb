@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2018_10_16_143452) do
+ActiveRecord::Schema.define(version: 2018_10_16_161538) do
 
   create_table "comments", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8", force: :cascade do |t|
     t.text "text"
@@ -31,6 +31,15 @@ ActiveRecord::Schema.define(version: 2018_10_16_143452) do
     t.decimal "lng", precision: 10, scale: 6
   end
 
+  create_table "reports", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8", force: :cascade do |t|
+    t.bigint "user_id"
+    t.bigint "comment_id"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["comment_id"], name: "index_reports_on_comment_id"
+    t.index ["user_id"], name: "index_reports_on_user_id"
+  end
+
   create_table "users", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8", force: :cascade do |t|
     t.string "name"
     t.string "password"
@@ -42,4 +51,6 @@ ActiveRecord::Schema.define(version: 2018_10_16_143452) do
 
   add_foreign_key "comments", "events"
   add_foreign_key "comments", "users"
+  add_foreign_key "reports", "comments"
+  add_foreign_key "reports", "users"
 end
