@@ -11,4 +11,15 @@ RSpec.describe Comment, type: :model do
     it { is_expected.to belong_to(:user) }
     it { is_expected.to belong_to(:event) }
   end
+
+  describe '.reported' do
+    it 'returns all reported comments' do
+      reported_comments = Comment.where(reported: true)
+      expect(reported_comments.size).to eq(Comment.reported.count)
+    end
+
+    it 'has to be greater than or equal to zero' do
+      expect(Comment.reported.count).to be >= 0
+    end
+  end
 end

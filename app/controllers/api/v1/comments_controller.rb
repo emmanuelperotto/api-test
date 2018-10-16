@@ -7,7 +7,11 @@ module Api
 
       # GET /comments
       def index
-        @comments = Comment.all
+        @comments = if params[:reported] == 'true'
+                      Comment.reported
+                    else
+                      Comment.all
+                    end
 
         render json: @comments
       end

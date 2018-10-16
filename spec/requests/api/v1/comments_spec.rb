@@ -3,7 +3,11 @@
 require 'rails_helper'
 
 RSpec.describe 'Comments', type: :request do
-  subject(:setup_comments) { Random.rand(1..10).times { create(:comment) } }
+  subject(:setup_comments) do
+    Random.rand(5..10).times do
+      create(:comment, reported: [true, false].sample)
+    end
+  end
 
   describe 'GET api/v1/comments' do
     it 'returns http status 200 (ok)' do
@@ -11,12 +15,24 @@ RSpec.describe 'Comments', type: :request do
       expect(response).to have_http_status(:ok)
     end
 
-    it 'returns all comments in the database' do
-      setup_comments
-      get api_v1_comments_path
-      json_response = JSON.parse(response.body)
+    context 'when NOT passing reported=true as param' do
+      it 'returns all comments' do
+        setup_comments
+        get api_v1_comments_path
+        json_response = JSON.parse(response.body)
 
-      expect(json_response.size).to eq Comment.count
+        expect(json_response.size).to eq Comment.count
+      end
+    end
+
+    context 'when passing reported=true as param' do
+      it 'returns reported comments' do
+        setup_comments
+        get api_v1_comments_path, params: { reported: 'true' }
+        json_response = JSON.parse(response.body)
+
+        expect(json_response.size).to eq Comment.where(reported: true).count
+      end
     end
   end
 
