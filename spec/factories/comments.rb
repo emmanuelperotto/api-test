@@ -3,7 +3,7 @@
 FactoryBot.define do
   factory :comment do
     text { 'MyText' }
-    user { nil }
-    event { nil }
+    user_id { create(:user).id }
+    event_id { create(:event).id }
   end
 end

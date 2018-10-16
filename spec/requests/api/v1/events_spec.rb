@@ -25,10 +25,18 @@ RSpec.describe 'Events', type: :request do
   end
 
   describe 'POST api/v1/events' do
+    subject(:successful_post_request) do
+      post api_v1_events_path, params: { event: attributes_for(:event) }
+    end
+
     context 'when sending valid params' do
       it 'returns http status 201 (created)' do
-        post api_v1_events_path, params: { event: attributes_for(:event) }
+        successful_post_request
         expect(response).to have_http_status(:created)
+      end
+
+      it 'changes the number of events' do
+        expect { successful_post_request }.to change(Event, :count).by(1)
       end
     end
 
