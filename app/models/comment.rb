@@ -6,4 +6,7 @@ class Comment < ApplicationRecord
 
   # Validations
   validates :text, presence: true
+
+  # Scopes
+  scope(:reported, -> { where(reported: true) })
 end
