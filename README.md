@@ -19,6 +19,7 @@ git clone https://github.com/emmanuelperotto/api-test
 Run this commands to create, seed database and run api locally
 ```
 cd api-test
+bundle install
 rails db:create db:migrate db:seed
 rails s
 ```
@@ -57,3 +58,8 @@ rails s
   }
 }
   ```
+
+# Test Suite
+ ```
+  bundle exec rspec
+ ```
