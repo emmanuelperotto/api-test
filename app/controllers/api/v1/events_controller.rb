@@ -22,7 +22,8 @@ module Api
         @event = Event.new(event_params)
 
         if @event.save
-          render json: @event, status: :created, location: @event
+          render json: @event, status: :created,
+                 location: api_v1_event_url(@event)
         else
           render json: @event.errors, status: :unprocessable_entity
         end
@@ -51,7 +52,7 @@ module Api
 
       # Only allow a trusted parameter "white list" through.
       def event_params
-        params.require(:event).permit(:name, :description)
+        params.require(:event).permit(:name, :description, :lat, :lng)
       end
     end
   end
