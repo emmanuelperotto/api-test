@@ -41,3 +41,19 @@ User.create!(
   password: '12345678',
   password_confirmation: '12345678'
 )
+
+# Creating Comments with or without reports
+25.times do |number|
+  user = User.all.sample
+  event = Event.all.sample
+  comment = Comment.new(
+    text: "Comentário teste nº #{number}",
+    user: user,
+    event: event
+  )
+
+  comment.reported = true if [1, 2].sample == 1
+
+  comment.save!
+  Report.create!(user: user, comment: comment)
+end
